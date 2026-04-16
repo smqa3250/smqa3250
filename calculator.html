@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Scientific Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .calculator {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            padding: 20px;
+            width: 400px;
+        }
+        .display {
+            width: 100%;
+            height: 60px;
+            background: #222;
+            color: #fff;
+            text-align: right;
+            font-size: 2em;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #ddd;
+        }
+        .operator {
+            background-color: #f39c12;
+        }
+        .operator:hover {
+            background: #e67e22;
+        }
+        .equals {
+            background-color: #2ecc71;
+        }
+        .equals:hover {
+            background: #27ae60;
+        }
+        .clear {
+            background-color: #e74c3c;
+        }
+        .clear:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div>
+            <button class="clear">C</button>
+            <button class="operator">&#177;</button>
+            <button class="operator">%</button>
+            <button class="operator">/</button>
+        </div>
+        <div>
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button class="operator">*</button>
+        </div>
+        <div>
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button class="operator">-</button>
+        </div>
+        <div>
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button class="operator">+</button>
+        </div>
+        <div>
+            <button>0</button>
+            <button class="operator equals">=</button>
+        </div>
+    </div>
+    <script>
+        const display = document.getElementById('display');
+        let currentInput = '0';
+        let operator = '';
+        let operand1 = null;
+
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.classList.contains('operator')) {
+                    handleOperator(button.textContent);
+                } else if (button.classList.contains('equals')) {
+                    calculate();
+                } else {
+                    handleNumber(button.textContent);
+                }
+            });
+        });
+
+        function handleNumber(number) {
+            if (currentInput === '0') {
+                currentInput = number;
+            } else {
+                currentInput += number;
+            }
+            updateDisplay();
+        }
+
+        function handleOperator(op) {
+            if (operator) {
+                calculate();
+            }
+            operator = op;
+            operand1 = parseFloat(currentInput);
+            currentInput = '0';
+        }
+
+        function calculate() {
+            if (operand1 === null || operator === '') return;
+            let operand2 = parseFloat(currentInput);
+            let result;
+            switch (operator) {
+                case '+':
+                    result = operand1 + operand2;
+                    break;
+                case '-':
+                    result = operand1 - operand2;
+                    break;
+                case '*':
+                    result = operand1 * operand2;
+                    break;
+                case '/':
+                    result = operand1 / operand2;
+                    break;
+            }
+            currentInput = result.toString();
+            operator = '';
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            display.textContent = currentInput;
+        }
+
+        document.querySelector('.clear').addEventListener('click', () => {
+            currentInput = '0';
+            operator = '';
+            operand1 = null;
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>
