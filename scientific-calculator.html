@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .calculator { max-width: 400px; margin: 50px auto; }
+        .display { width: 100%; height: 50px; font-size: 2em; text-align: right; padding: 10px; }
+        .button { width: 25%; padding: 20px; font-size: 1.5em; }
+        .button-row { display: flex; }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" class="display" id="display" disabled />
+        <div class="button-row">
+            <button class="button" onclick="appendCharacter('7')">7</button>
+            <button class="button" onclick="appendCharacter('8')">8</button>
+            <button class="button" onclick="appendCharacter('9')">9</button>
+            <button class="button" onclick="setOperation('/')">/</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="appendCharacter('4')">4</button>
+            <button class="button" onclick="appendCharacter('5')">5</button>
+            <button class="button" onclick="appendCharacter('6')">6</button>
+            <button class="button" onclick="setOperation('*')">*</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="appendCharacter('1')">1</button>
+            <button class="button" onclick="appendCharacter('2')">2</button>
+            <button class="button" onclick="appendCharacter('3')">3</button>
+            <button class="button" onclick="setOperation('-')">-</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="appendCharacter('0')">0</button>
+            <button class="button" onclick="calculateResult()">=</button>
+            <button class="button" onclick="clearDisplay()">C</button>
+            <button class="button" onclick="setOperation('+')">+</button>
+        </div>
+        <div class="button-row">
+            <button class="button" onclick="appendCharacter('Math.sin(')">sin</button>
+            <button class="button" onclick="appendCharacter('Math.cos(')">cos</button>
+            <button class="button" onclick="appendCharacter('Math.tan(')">tan</button>
+            <button class="button" onclick="appendCharacter('Math.log(')">log</button>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '';
+        let currentOperation = '';
+
+        function appendCharacter(character) {
+            currentInput += character;
+            display.value = currentInput;
+        }
+
+        function setOperation(operation) {
+            if (currentInput) {
+                currentOperation = operation;
+                currentInput += ` ${operation} `;
+                display.value = currentInput;
+            }
+        }
+
+        function calculateResult() {
+            try {
+                display.value = eval(currentInput);
+                currentInput = display.value;
+            } catch (e) {
+                display.value = 'Error';
+                currentInput = '';
+            }
+        }
+
+        function clearDisplay() {
+            currentInput = '';
+            display.value = '';
+        }
+    </script>
+</body>
+</html>
